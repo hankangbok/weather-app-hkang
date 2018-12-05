@@ -8,7 +8,7 @@ class WeatherDisplay extends React.Component {
   render() {
     return (
       <div>
-        <h2>The current weather is {this.props.value}</h2>
+        <h2>The current weather is {this.props.weather}</h2>
         <h3>For the city of {this.props.maCity}</h3> 
       </div>
     );
@@ -17,12 +17,18 @@ class WeatherDisplay extends React.Component {
 class ReactionGif extends React.Component {
   constructor(props) {
     super(props);
+    let weather = this.props.weather;
+    this.state = {
+      weather: weather,
+      // imgKeyword: "idk"
+    };
     this.gifButton = this.gifButton.bind(this);
   }
   gifButton(keyword) {
+    console.log("Looking for a gif thats descriptive of "+keyword);
     const img = document.querySelector('img');
-    // fetch('https://api.giphy.com/v1/gifs/translate?api_key=utydx4ZJeUF4Ys1Bdn5Hp8nmF1EqLow6&s=cats'+keyword, {mode:'cors'})
-    fetch('https://api.giphy.com/v1/gifs/translate?api_key=utydx4ZJeUF4Ys1Bdn5Hp8nmF1EqLow6&s='+keyword, {mode:'cors'})
+    fetch('https://api.giphy.com/v1/gifs/translate?api_key=utydx4ZJeUF4Ys1Bdn5Hp8nmF1EqLow6&s='
+      +keyword, {mode:'cors'})
       .then(function(response) {
         return response.json();
       })
@@ -36,8 +42,7 @@ class ReactionGif extends React.Component {
   
   render() {
     return (
-      <img alt="" src="https://media.tenor.com/images/47b81948be5023555549c01d88ae3289/tenor.gif">
-      </img>
+      <img alt="" src={this.gifButton(this.state.weather)} />
     );
   }
 }
@@ -46,7 +51,7 @@ class LocationEntry extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      weatherDisplay: "DATA DISPLAYED HERE (EVENTUALLY)",
+      weatherDisplay: "Cats",
       maCity:"Not Picked Yet"
     };
     this.handleClick = this.handleClick.bind(this);
@@ -92,8 +97,8 @@ class LocationEntry extends React.Component {
           {" "}
           Enter the location for the weather you want
         </button>
-        <WeatherDisplay value={this.state.weatherDisplay} maCity={this.state.maCity} />
-        <ReactionGif />
+        <WeatherDisplay weather={this.state.weatherDisplay} maCity={this.state.maCity} />
+        <ReactionGif weather={this.state.weatherDisplay} />
       </form>
     );
   }
