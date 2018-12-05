@@ -1,3 +1,24 @@
+# Weather Application 
+## Work In Progress, non-functional (12/4/2018)
+This is a simple application that should:
+1) Take a location input
+2) Display the weather in that location
+3) Toggle between Celsius and Fahrenheit
+4) Change page appearance depending on the weather returned
+5) Look pretty 
+
+
+#Technologies Utilized:
+- [OpenWeatherMap] (https://openweathermap.org/current) API 
+- [GIPHY] (https://developers.giphy.com/) API
+- [React] (https://reactjs.org/) Javscript Library
+- Javascript
+- HTML
+- CSS
+- FlexBox (CSS)
+
+
+# React Related README below, not project.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
