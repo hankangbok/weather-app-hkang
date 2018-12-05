@@ -1,16 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
 // import App from './App';
-import * as serviceWorker from './serviceWorker';
-
-
+import * as serviceWorker from "./serviceWorker";
 
 class WeatherDisplay extends React.Component {
   render() {
     return (
       <div>
-        <h2>This is where the returned data from the weather API will go</h2>
+        <h2>The current weather is {this.props.value}</h2>
+        <h3>For the city of {this.props.maCity}</h3> 
       </div>
     );
   }
@@ -19,9 +18,11 @@ class LocationEntry extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      weatherDisplay: "DATA DISPLAYED HERE (EVENTUALLY)"
-    }
+      weatherDisplay: "DATA DISPLAYED HERE (EVENTUALLY)",
+      maCity:"Not Picked Yet"
+    };
     this.handleClick = this.handleClick.bind(this);
+    this.gettheWeather = this.gettheWeather.bind(this);
   }
   handleClick() {
     // api.openweathermap.org/data/2.5/weather?q=London
@@ -29,21 +30,40 @@ class LocationEntry extends React.Component {
   }
 
   async gettheWeather() {
-    const url = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7433f086548c39db39d578affe769a25";
-    const response = await fetch(url, { mode: 'cors' });
+    const url =
+      "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7433f086548c39db39d578affe769a25";
+    const citySelected = document.getElementById("city-selected").value;
+
+    const newUrl= "https://api.openweathermap.org/data/2.5/weather?q="+
+      +citySelected
+      +"&APPID=7433f086548c39db39d578affe769a25";
+    const response = await fetch(newUrl, { mode: "cors" });
     const data = await response.json();
-    if (data.cod=="200") {
+    if (data.cod == "200") {
       console.log(data.cod);
       console.log(data.weather[0].main);
-      alert("Your city");
+      const currentWeather = data.weather[0].main;
+      console.log(currentWeather);
+      this.setState({
+        weatherDisplay: currentWeather,
+        maCity:data.name
+      });
     }
   }
+
   render() {
     return (
       <form>
-        <input type="text" placeholder="Please enter a city" />
-        <button type="button" onClick={this.gettheWeather}> Enter the location for the weather you want</button>
-        <WeatherDisplay value={this.state.weatherDisplay} />
+        <input
+          type="text"
+          placeholder="Please enter a city name"
+          id="city-selected"
+        />
+        <button type="button" onClick={this.gettheWeather}>
+          {" "}
+          Enter the location for the weather you want
+        </button>
+        <WeatherDisplay value={this.state.weatherDisplay} maCity={this.state.maCity} />
       </form>
     );
   }
@@ -51,9 +71,7 @@ class LocationEntry extends React.Component {
 
 class PrettyHeader extends React.Component {
   render() {
-    return (
-      <header>Welcome to the Weather Page!</header>
-    );
+    return <header>Welcome to the Weather Page!</header>;
   }
 }
 
@@ -69,9 +87,7 @@ class TopLevelWeatherApp extends React.Component {
   }
 }
 
-ReactDOM.render((
-  <TopLevelWeatherApp />
-), document.getElementById('root'));
+ReactDOM.render(<TopLevelWeatherApp />, document.getElementById("root"));
 
 // ReactDOM.render(<JustTesting />, document.getElementById('root'));
 console.log("It's looking like weather time");
