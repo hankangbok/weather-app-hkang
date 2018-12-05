@@ -14,6 +14,34 @@ class WeatherDisplay extends React.Component {
     );
   }
 }
+class ReactionGif extends React.Component {
+  constructor(props) {
+    super(props);
+    this.gifButton = this.gifButton.bind(this);
+  }
+  gifButton(keyword) {
+    const img = document.querySelector('img');
+    // fetch('https://api.giphy.com/v1/gifs/translate?api_key=utydx4ZJeUF4Ys1Bdn5Hp8nmF1EqLow6&s=cats'+keyword, {mode:'cors'})
+    fetch('https://api.giphy.com/v1/gifs/translate?api_key=utydx4ZJeUF4Ys1Bdn5Hp8nmF1EqLow6&s='+keyword, {mode:'cors'})
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(response) {
+        img.src=response.data.images.original.url;
+      })
+      .catch(function(error) {
+        alert("No such Gif");
+      })
+  }
+  
+  render() {
+    return (
+      <img alt="" src="https://media.tenor.com/images/47b81948be5023555549c01d88ae3289/tenor.gif">
+      </img>
+    );
+  }
+}
+
 class LocationEntry extends React.Component {
   constructor(props) {
     super(props);
@@ -33,11 +61,12 @@ class LocationEntry extends React.Component {
     const url =
       "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7433f086548c39db39d578affe769a25";
     const citySelected = document.getElementById("city-selected").value;
-
-    const newUrl= "https://api.openweathermap.org/data/2.5/weather?q="+
+    console.log(citySelected);
+    const newURL= "https://api.openweathermap.org/data/2.5/weather?q="+
       +citySelected
       +"&APPID=7433f086548c39db39d578affe769a25";
-    const response = await fetch(newUrl, { mode: "cors" });
+    const whichURL = (citySelected==0)? url : newURL;
+    const response = await fetch(whichURL, { mode: "cors" });
     const data = await response.json();
     if (data.cod == "200") {
       console.log(data.cod);
@@ -64,6 +93,7 @@ class LocationEntry extends React.Component {
           Enter the location for the weather you want
         </button>
         <WeatherDisplay value={this.state.weatherDisplay} maCity={this.state.maCity} />
+        <ReactionGif />
       </form>
     );
   }

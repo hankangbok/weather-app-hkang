@@ -1,8 +1,7 @@
 import React from 'react';
 
-function updateGifTo() {
-  
+export function updateGifTo() {
+  console.log("change the page gif")
 }
 
 
-module.exports=updateGifTo
