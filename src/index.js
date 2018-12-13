@@ -17,9 +17,9 @@ class WeatherDisplay extends React.Component {
 class ReactionGif extends React.Component {
   constructor(props) {
     super(props);
-    let weather = this.props.weather;
+    let propsweather = this.props.weather;
     this.state = {
-      weather: weather,
+      weather: propsweather,
       // imgKeyword: "idk"
     };
     this.gifButton = this.gifButton.bind(this);
@@ -67,21 +67,25 @@ class LocationEntry extends React.Component {
       "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7433f086548c39db39d578affe769a25";
     const citySelected = document.getElementById("city-selected").value;
     console.log(citySelected);
-    const newURL= "https://api.openweathermap.org/data/2.5/weather?q="+
+    const newURL= "https://api.openweathermap.org/data/2.5/weather?q="
       +citySelected
       +"&APPID=7433f086548c39db39d578affe769a25";
-    const whichURL = (citySelected==0)? url : newURL;
+    const whichURL = (citySelected===0)? url : newURL;
     const response = await fetch(whichURL, { mode: "cors" });
     const data = await response.json();
-    if (data.cod == "200") {
+    if (data.cod === 200) {
       console.log(data.cod);
-      console.log(data.weather[0].main);
+      // console.log(data.weather[0].main);
       const currentWeather = data.weather[0].main;
+      const currentCity = data.name;
       console.log(currentWeather);
+      console.log(currentCity +"Is the city");
       this.setState({
         weatherDisplay: currentWeather,
-        maCity:data.name
+        maCity: currentCity
       });
+    } else {
+      alert("That is not a valid city name");
     }
   }
 
