@@ -6,6 +6,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  display:flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  text-align: center;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -14,7 +21,6 @@ code {
 header {
   text-align: center;
   font-size: 4em;
-  border: 2px pink solid;
 }
 /* 
 .top-level-weather-app {
@@ -24,17 +30,10 @@ header {
   flex-direction: column;
   text-align: center;
 } */
-body {
-  border: 2px pink solid;
-  display:flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  text-align: center;
-}
+
 
 img {
   margin-left:auto;
   margin-right:auto;
   padding: 30px;
-  border: 2px blue transparent;
 }

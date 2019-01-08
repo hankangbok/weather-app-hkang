@@ -2,14 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 // import App from './App';
-import * as serviceWorker from "./serviceWorker";
 
 class WeatherDisplay extends React.Component {
   render() {
     return (
       <div>
         <h2>The current weather is {this.props.weather}</h2>
-        <h3>For the city of {this.props.maCity}</h3> 
+        <h3>For the city of {this.props.myCity}</h3>
       </div>
     );
   }
@@ -20,29 +19,33 @@ class ReactionGif extends React.Component {
     let propsweather = this.props.weather;
     this.state = {
       weather: propsweather,
-      // imgKeyword: "idk"
     };
+    console.log(this.state.weather + "is whats up");
     this.gifButton = this.gifButton.bind(this);
   }
   gifButton(keyword) {
-    console.log("Looking for a gif thats descriptive of "+keyword);
+    console.log("Looking for a gif thats descriptive of " + keyword);
     const img = document.querySelector('img');
     fetch('https://api.giphy.com/v1/gifs/translate?api_key=utydx4ZJeUF4Ys1Bdn5Hp8nmF1EqLow6&s='
-      +keyword, {mode:'cors'})
-      .then(function(response) {
+      + keyword, { mode: 'cors' })
+      .then(function (response) {
         return response.json();
       })
-      .then(function(response) {
-        img.src=response.data.images.original.url;
+      .then(function (response) {
+        img.src = response.data.images.original.url;
       })
-      .catch(function(error) {
+      .catch(function (error) {
         alert("No such Gif");
       })
   }
-  
+  handleCityEntry() {
+    if (this.state.weather) {
+      this.setState({weather: this.state.weather})
+    }
+  }
   render() {
     return (
-      <img alt="" src={this.gifButton(this.state.weather)} />
+      <img alt="" src={this.gifButton(this.props.weather)} />
     );
   }
 }
@@ -51,38 +54,48 @@ class LocationEntry extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      weatherDisplay: "Cats",
-      maCity:"Not Picked Yet"
+      weatherDisplay: "happy",
+      myCity: "San Francisco",
     };
     this.handleClick = this.handleClick.bind(this);
     this.gettheWeather = this.gettheWeather.bind(this);
+    // this.sfWeather = this.sfWeather.bind(this);
+    // this.sfWeather();
   }
   handleClick() {
     // api.openweathermap.org/data/2.5/weather?q=London
     console.log("HUHUHU");
   }
-
+  // async sfWeather() {
+  //   const url =
+  //     "https://api.openweathermap.org/data/2.5/weather?q=San%20Francisco&APPID=7433f086548c39db39d578affe769a25";
+  //     const response = fetch(url, {mode: "cors" });
+  //     const data = await response.json();
+  //     const currentSFWeather = data.weather[0].main;
+  //     console.log(currentSFWeather);
+  //     this.setState({weatherDisplay: currentSFWeather});
+  //     return currentSFWeather;
+  // }
   async gettheWeather() {
     const url =
       "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7433f086548c39db39d578affe769a25";
     const citySelected = document.getElementById("city-selected").value;
     console.log(citySelected);
-    const newURL= "https://api.openweathermap.org/data/2.5/weather?q="
-      +citySelected
-      +"&APPID=7433f086548c39db39d578affe769a25";
-    const whichURL = (citySelected===0)? url : newURL;
+    const newURL = "https://api.openweathermap.org/data/2.5/weather?q="
+      + citySelected
+      + "&APPID=7433f086548c39db39d578affe769a25";
+    const whichURL = (citySelected === 0) ? url : newURL;
     const response = await fetch(whichURL, { mode: "cors" });
     const data = await response.json();
     if (data.cod === 200) {
       console.log(data.cod);
-      // console.log(data.weather[0].main);
       const currentWeather = data.weather[0].main;
       const currentCity = data.name;
       console.log(currentWeather);
-      console.log(currentCity +"Is the city");
+      console.log(currentCity + "Is the city");
       this.setState({
         weatherDisplay: currentWeather,
-        maCity: currentCity
+        myCity: currentCity
       });
     } else {
       alert("That is not a valid city name");
@@ -90,18 +103,21 @@ class LocationEntry extends React.Component {
   }
 
   render() {
+    const preventReload = function(e) {
+      e.preventDefault();
+    }
     return (
-      <form>
+      <form onSubmit={preventReload}>
         <input
           type="text"
-          placeholder="Please enter a city name"
+          placeholder="Enter a city name"
           id="city-selected"
         />
         <button type="button" onClick={this.gettheWeather}>
           {" "}
-          Enter the location for the weather you want
+          Search
         </button>
-        <WeatherDisplay weather={this.state.weatherDisplay} maCity={this.state.maCity} />
+        <WeatherDisplay weather={this.state.weatherDisplay} myCity={this.state.myCity} />
         <ReactionGif weather={this.state.weatherDisplay} />
       </form>
     );
@@ -119,7 +135,7 @@ class TopLevelWeatherApp extends React.Component {
     return (
       <div className="top-level-weather-app">
         <PrettyHeader />
-        <h1>This is the top level of the Weather App</h1>
+        <h1>Enter a city name to see the weather there!</h1>
         <LocationEntry />
       </div>
     );
@@ -130,7 +146,3 @@ ReactDOM.render(<TopLevelWeatherApp />, document.getElementById("root"));
 
 // ReactDOM.render(<JustTesting />, document.getElementById('root'));
 console.log("It's looking like weather time");
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
