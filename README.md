@@ -1,5 +1,6 @@
 # Weather Application 
-Deployed at: https://hankangbok.github.io/weather-app-hkang/  
+## Deployed At:  
+https://hankangbok.github.io/weather-app-hkang/  
   
 This is a simple application that should:
 1) Take a location input
