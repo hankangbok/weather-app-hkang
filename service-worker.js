@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/weather-app-hkang/precache-manifest.d87113cdb36c24d6eea9453f98134feb.js"
+  "/weather-app-hkang/precache-manifest.317d89d476dbbd3501d167bdd4a87a31.js"
 );
 
 workbox.clientsClaim();
