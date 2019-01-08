@@ -11,6 +11,10 @@ body {
   flex-wrap: wrap;
   flex-direction: column;
   text-align: center;
+  align-items: center;
+}
+#root {
+  width: 50%;
 }
 
 code {
@@ -30,10 +34,21 @@ header {
   flex-direction: column;
   text-align: center;
 } */
-
+.search-bar{
+  height: 40px;
+  width: 20%;
+  font-size: 15px;
+}
+/* TODO: Make the result gifs come up a little less jarringly */
+@keyframes resultGIF {
+  0% {opacity:0}
+  100% {opacity:1}
+}
 
 img {
   margin-left:auto;
   margin-right:auto;
   padding: 30px;
+  animation-name: resultGIF;
+  animation-duration: 3s;
 }

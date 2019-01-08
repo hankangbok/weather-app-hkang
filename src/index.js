@@ -18,44 +18,46 @@ class ReactionGif extends React.Component {
     super(props);
     let propsweather = this.props.weather;
     this.state = {
-      weather: propsweather,
+      weather: propsweather
     };
     console.log(this.state.weather + "is whats up");
     this.gifButton = this.gifButton.bind(this);
   }
   gifButton(keyword) {
     console.log("Looking for a gif thats descriptive of " + keyword);
-    const img = document.querySelector('img');
-    fetch('https://api.giphy.com/v1/gifs/translate?api_key=utydx4ZJeUF4Ys1Bdn5Hp8nmF1EqLow6&s='
-      + keyword, { mode: 'cors' })
-      .then(function (response) {
+    const img = document.querySelector("img");
+    fetch(
+      "https://api.giphy.com/v1/gifs/translate?api_key=utydx4ZJeUF4Ys1Bdn5Hp8nmF1EqLow6&s=" +
+        keyword,
+      { mode: "cors" }
+    )
+      .then(function(response) {
         return response.json();
       })
-      .then(function (response) {
+      .then(function(response) {
         img.src = response.data.images.original.url;
       })
-      .catch(function (error) {
+      .catch(function(error) {
         alert("No such Gif");
-      })
+      });
   }
   handleCityEntry() {
     if (this.state.weather) {
-      this.setState({weather: this.state.weather})
+      this.setState({ weather: this.state.weather });
     }
   }
   render() {
-    return (
-      <img alt="" src={this.gifButton(this.props.weather)} />
-    );
+    return <img alt="" src={this.gifButton(this.props.weather)} />;
   }
 }
-
+// TODO: This class is doing too many things. Decouple it. 
 class LocationEntry extends React.Component {
   constructor(props) {
     super(props);
+    // TODO: Initialize the page with the current weather for SF
     this.state = {
-      weatherDisplay: "happy",
-      myCity: "San Francisco",
+      weatherDisplay: "chill",
+      myCity: "San Francisco"
     };
     this.handleClick = this.handleClick.bind(this);
     this.gettheWeather = this.gettheWeather.bind(this);
@@ -81,10 +83,11 @@ class LocationEntry extends React.Component {
       "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7433f086548c39db39d578affe769a25";
     const citySelected = document.getElementById("city-selected").value;
     console.log(citySelected);
-    const newURL = "https://api.openweathermap.org/data/2.5/weather?q="
-      + citySelected
-      + "&APPID=7433f086548c39db39d578affe769a25";
-    const whichURL = (citySelected === 0) ? url : newURL;
+    const newURL =
+      "https://api.openweathermap.org/data/2.5/weather?q=" +
+      citySelected +
+      "&APPID=7433f086548c39db39d578affe769a25";
+    const whichURL = citySelected === 0 ? url : newURL;
     const response = await fetch(whichURL, { mode: "cors" });
     const data = await response.json();
     if (data.cod === 200) {
@@ -103,21 +106,33 @@ class LocationEntry extends React.Component {
   }
 
   render() {
+    // TODO: Make it so users can enter by presisng the enter key
+    // For now, enter will not submit the data
     const preventReload = function(e) {
       e.preventDefault();
-    }
+      // this.gettheWeather();
+    };
     return (
       <form onSubmit={preventReload}>
         <input
+          className='search-bar'
           type="text"
           placeholder="Enter a city name"
-          id="city-selected"
+          autoFocus="autoFocus"
+          id = 'city-selected'
         />
-        <button type="button" onClick={this.gettheWeather}>
+        <button
+          className='search-bar'
+          type="button"
+          onClick={this.gettheWeather}
+        >
           {" "}
           Search
         </button>
-        <WeatherDisplay weather={this.state.weatherDisplay} myCity={this.state.myCity} />
+        <WeatherDisplay
+          weather={this.state.weatherDisplay}
+          myCity={this.state.myCity}
+        />
         <ReactionGif weather={this.state.weatherDisplay} />
       </form>
     );
@@ -126,7 +141,7 @@ class LocationEntry extends React.Component {
 
 class PrettyHeader extends React.Component {
   render() {
-    return <header>Welcome to the Weather Page!</header>;
+    return <header>Welcome to the<br/> Weather Page!</header>;
   }
 }
 
